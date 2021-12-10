@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>drawio-connector</artifactId>
+        <groupId>fr.fragnier.dwawio</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>web-api</artifactId>
+
+    <properties>
+        <maven.compiler.source>16</maven.compiler.source>
+        <maven.compiler.target>16</maven.compiler.target>
+        <typescript-output-dir>${project.basedir}/../frontend/src/generated</typescript-output-dir>
+        <cz.habarta.typescript-generator.version>2.33.956</cz.habarta.typescript-generator.version>
+    </properties>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>cz.habarta.typescript-generator</groupId>
+                <artifactId>typescript-generator-maven-plugin</artifactId>
+                <version>${cz.habarta.typescript-generator.version}</version>
+                <executions>
+                    <execution>
+                        <id>generate</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <phase>process-classes</phase>
+                    </execution>
+                </executions>
+                <configuration>
+                    <jsonLibrary>jackson2</jsonLibrary>
+                    <classesWithAnnotations>
+                        <annotation>org.springframework.web.bind.annotation.RestController</annotation>
+                    </classesWithAnnotations>
+                    <generateSpringApplicationClient>true</generateSpringApplicationClient>
+                    <outputKind>module</outputKind>
+                    <outputFileType>implementationFile</outputFileType>
+                    <restResponseType>Observable&lt;R&gt;</restResponseType>
+                    <outputKind>module</outputKind>
+                    <importDeclarations>
+                        <import>import { Observable } from "rxjs"</import>
+                    </importDeclarations>
+                    <mapClasses>asClasses</mapClasses>
+                    <mapEnum>asEnum</mapEnum>
+                    <nonConstEnums>true</nonConstEnums>
+                    <outputFile>${typescript-output-dir}/client-api.ts</outputFile>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>cz.habarta.typescript-generator</groupId>
+                        <artifactId>typescript-generator-spring</artifactId>
+                        <version>${cz.habarta.typescript-generator.version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+        </plugins>
+    </build>
+</project>

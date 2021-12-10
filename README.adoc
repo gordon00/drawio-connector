@@ -1,0 +1,7 @@
+
+
+https://github.com/jgraph/drawio-integration/blob/master/localstorage.html[iframe local storage]
+
+* embed
+
+?embed=1&ui=atlas&spin=1&proto=json
